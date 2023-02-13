@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script{
                 sh  docker build -t task .
-               docker tag task:latest 677538114768.dkr.ecr.us-east-1.amazonaws.com/task:latest
+                docker tag task:latest 677538114768.dkr.ecr.us-east-1.amazonaws.com/task:latest
                 }
             }
         }
