@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Cloning Git') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/akannan1087/myPythonDockerRepo']]])     
+                  checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/chaitanyapriya123/ecr.git']])
             }
         }
   
@@ -33,15 +33,15 @@ pipeline {
          // Stopping Docker containers for cleaner Docker run
      stage('stop previous containers') {
          steps {
-            sh 'docker ps -f name=mypythonContainer -q | xargs --no-run-if-empty docker container stop'
-            sh 'docker container ls -a -fname=mypythonContainer -q | xargs -r docker container rm'
+            sh 'docker ps -f name=latest -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker container ls -a -fname=latest -q | xargs -r docker container rm'
          }
        }
       
     stage('Docker Run') {
      steps{
          script {
-                sh 'docker run -d -p 8096:5000 --rm --name mypythonContainer acct_id.dkr.ecr.us-us-east-2.amazonaws.com/your_ecr_repo:latest'
+                sh 'docker run -d -p 8096:5000 --rm latest acct_id.dkr.ecr.us-us-east-2.amazonaws.com/your_ecr_repo:latest'
             }
       }
     }
